@@ -13,7 +13,7 @@ public class jpaTest {
     BankDao bankDao = new BankDao();
     BankService bankService = new BankService();
 
-    // Create two Students
+    // Create two Three Banks
     bankDao.save(1, "Bank-1"); // Bank-1 will get an id 1
     bankDao.save(2, "Bank-2");
     bankDao.save(3, "Bank-3");

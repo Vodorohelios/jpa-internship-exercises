@@ -89,10 +89,10 @@ public class BankDao {
       // Begin the transaction
       transaction.begin();
 
-      // Get the Student object
+      // Get the bank object
       Bank bank = manager.find(Bank.class, id);
 
-      // Delete the student
+      // Delete the bank
       manager.remove(bank);
 
       // Commit the transaction
