@@ -1,16 +1,16 @@
 package internship.dao;
 
-import internship.models.Bank;
+import internship.models.Department;
 import internship.services.EmfService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.List;
 
-public class BankDao {
+public class DepartmentDao {
   public EmfService emfService = new EmfService();
 
-  public void save(Bank bank) {
+  public void save(int id, String address) {
     EntityManager manager = emfService.createEntityManager();
     EntityTransaction transaction = null;
 
@@ -20,43 +20,13 @@ public class BankDao {
       // Begin the transaction
       transaction.begin();
 
-      // Save the Bank object
-//      Bank managedBank = manager.merge(bank);
-//      manager.persist(managedBank);
-      manager.merge(bank);
+      // Create a new Department object
+      Department department = new Department();
+      department.setDepartmentNumber(id);
+      department.setAddress(address);
 
-      // Commit the transaction
-      transaction.commit();
-    }
-    catch (Exception ex) {
-      // If there are any exceptions, roll back the changes
-      if (transaction != null) {
-        transaction.rollback();
-      }
-      ex.printStackTrace();
-    }
-    finally {
-      manager.close();
-    }
-  }
-
-  public void save(int id, String name) {
-    EntityManager manager = emfService.createEntityManager();
-    EntityTransaction transaction = null;
-
-    try {
-      // Get a transaction
-      transaction = manager.getTransaction();
-      // Begin the transaction
-      transaction.begin();
-
-      // Create a new Bank object
-      Bank bank = new Bank();
-      bank.setId(id);
-      bank.setName(name);
-
-      // Save the bank object
-      manager.merge(bank);
+      // Save the department object
+      manager.merge(department);
 
       // Commit the transaction
       transaction.commit();
@@ -84,14 +54,14 @@ public class BankDao {
       // Begin the transaction
       transaction.begin();
 
-      // Get the Bank object
-      Bank bank = manager.find(Bank.class, id);
+      // Get the Department object
+      Department department = manager.find(Department.class, id);
 
       // Change the values
-      bank.setName(name);
+      department.setAddress(name);
 
-      // Update the bank
-      manager.persist(bank);
+      // Update the department
+      manager.persist(department);
 
       // Commit the transaction
       transaction.commit();
@@ -119,11 +89,11 @@ public class BankDao {
       // Begin the transaction
       transaction.begin();
 
-      // Get the bank object
-      Bank bank = manager.find(Bank.class, id);
+      // Get the department object
+      Department department = manager.find(Department.class, id);
 
-      // Delete the bank
-      manager.remove(bank);
+      // Delete the department
+      manager.remove(department);
 
       // Commit the transaction
       transaction.commit();
@@ -142,7 +112,7 @@ public class BankDao {
 
   public List readAll() {
 
-    List<Bank> banks = null;
+    List<Department> departments = null;
 
     // Create an EntityManager
     EntityManager manager = emfService.createEntityManager();
@@ -154,9 +124,9 @@ public class BankDao {
       // Begin the transaction
       transaction.begin();
 
-      // Get a List of Banks
-      banks = manager.createQuery("SELECT b FROM Bank b",
-              Bank.class).getResultList();
+      // Get a List of Departments
+      departments = manager.createQuery("SELECT b FROM Department b",
+              Department.class).getResultList();
 
       // Commit the transaction
       transaction.commit();
@@ -171,41 +141,7 @@ public class BankDao {
       // Close the EntityManager
       manager.close();
     }
-    return banks;
-  }
-
-  public Bank read(int id) {
-
-    Bank bank = null;
-
-    // Create an EntityManager
-    EntityManager manager = emfService.createEntityManager();
-    EntityTransaction transaction = null;
-
-    try {
-      // Get a transaction
-      transaction = manager.getTransaction();
-      // Begin the transaction
-      transaction.begin();
-
-      // Get a Bank object by its id
-      bank = manager.createQuery("SELECT b FROM Bank b where id = :id",
-              Bank.class).setParameter("id", id).getSingleResult();
-
-      // Commit the transaction
-      transaction.commit();
-    } catch (Exception ex) {
-      // If there are any exceptions, roll back the changes
-      if (transaction != null) {
-        transaction.rollback();
-      }
-      // Print the Exception
-      ex.printStackTrace();
-    } finally {
-      // Close the EntityManager
-      manager.close();
-    }
-    return bank;
+    return departments;
   }
 
 }
