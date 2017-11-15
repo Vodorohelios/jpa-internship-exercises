@@ -1,5 +1,6 @@
 package internship.dao;
 
+import internship.models.Bank;
 import internship.models.Department;
 import internship.services.EmfService;
 
@@ -9,6 +10,34 @@ import java.util.List;
 
 public class DepartmentDao {
   public EmfService emfService = new EmfService();
+
+  public void save(Department department) {
+    EntityManager manager = emfService.createEntityManager();
+    EntityTransaction transaction = null;
+
+    try {
+      // Get a transaction
+      transaction = manager.getTransaction();
+      // Begin the transaction
+      transaction.begin();
+
+      // Save the Bank object
+      manager.merge(department);
+
+      // Commit the transaction
+      transaction.commit();
+    }
+    catch (Exception ex) {
+      // If there are any exceptions, roll back the changes
+      if (transaction != null) {
+        transaction.rollback();
+      }
+      ex.printStackTrace();
+    }
+    finally {
+      manager.close();
+    }
+  }
 
   public void save(int id, String address) {
     EntityManager manager = emfService.createEntityManager();

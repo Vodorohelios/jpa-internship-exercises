@@ -1,6 +1,8 @@
 package internship.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Department {
@@ -13,6 +15,13 @@ public class Department {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "bank_id")
   private Bank bank;
+
+  @OneToMany(
+          mappedBy = "department",
+          cascade = CascadeType.ALL,
+          orphanRemoval = true
+  )
+  private List<User> users = new ArrayList<>();
 
   public Department() {}
 
@@ -43,5 +52,23 @@ public class Department {
 
   public void setBank(Bank bank) {
     this.bank = bank;
+  }
+
+  public List<User> getUsers() {
+    return users;
+  }
+
+  public void setUsers(List<User> users) {
+    this.users = users;
+  }
+
+  public void addUser(User user) {
+    users.add(user);
+    user.setDepartment(this);
+  }
+
+  public void removeUser(User user) {
+    users.remove(user);
+    user.setDepartment(null);
   }
 }
