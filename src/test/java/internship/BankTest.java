@@ -1,19 +1,22 @@
 package internship;
 
 import internship.dao.BankDao;
-import internship.services.BankService;
+import internship.models.Bank;
+import internship.services.EmfService;
 import org.junit.Test;
 
 import java.util.List;
 
-public class jpaTest {
+import static org.junit.Assert.assertEquals;
+
+public class BankTest {
 
   @Test
   public void testJpa() {
     BankDao bankDao = new BankDao();
-    BankService bankService = new BankService();
+    EmfService emfService = new EmfService();
 
-    // Create two Three Banks
+    // Create three Banks
     bankDao.save(1, "Bank-1"); // Bank-1 will get an id 1
     bankDao.save(2, "Bank-2");
     bankDao.save(3, "Bank-3");
@@ -32,7 +35,13 @@ public class jpaTest {
       }
     }
 
+    Bank bank1 = bankDao.read(1);
+    Bank bank2 = bankDao.read(2);
+
+    assertEquals("Updated-Bank-1", bank1.getName());
+    assertEquals("Bank-2", bank2.getName());
+
     // Don't forget to close the entity manager factory
-    bankService.closeEntityManager();
+    emfService.closeEntityManager();
   }
 }
