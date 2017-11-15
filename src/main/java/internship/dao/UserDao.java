@@ -1,5 +1,6 @@
 package internship.dao;
 
+import internship.models.Department;
 import internship.models.PrivateInfo;
 import internship.models.User;
 import internship.services.EmfService;
@@ -140,6 +141,72 @@ public class UserDao {
       manager.close();
     }
     return user;
+  }
+
+  public List<User> readAll() {
+
+    List<User> users = null;
+
+    // Create an EntityManager
+    EntityManager manager = emfService.createEntityManager();
+    EntityTransaction transaction = null;
+
+    try {
+      // Get a transaction
+      transaction = manager.getTransaction();
+      // Begin the transaction
+      transaction.begin();
+
+      // Get a List of Users
+      users = manager.createQuery("SELECT b FROM Department b",
+              User.class).getResultList();
+
+      // Commit the transaction
+      transaction.commit();
+    } catch (Exception ex) {
+      // If there are any exceptions, roll back the changes
+      if (transaction != null) {
+        transaction.rollback();
+      }
+      // Print the Exception
+      ex.printStackTrace();
+    } finally {
+      // Close the EntityManager
+      manager.close();
+    }
+    return users;
+  }
+
+  public PrivateInfo readPrivateInfo(String phoneNumber) {
+    PrivateInfo privateInfo = null;
+
+    // Create an EntityManager
+    EntityManager manager = emfService.createEntityManager();
+    EntityTransaction transaction = null;
+
+    try {
+      // Get a transaction
+      transaction = manager.getTransaction();
+      // Begin the transaction
+      transaction.begin();
+
+      // Get the PrivateInfo object
+      privateInfo = manager.find(PrivateInfo.class, phoneNumber);
+
+      // Commit the transaction
+      transaction.commit();
+    } catch (Exception ex) {
+      // If there are any exceptions, roll back the changes
+      if (transaction != null) {
+        transaction.rollback();
+      }
+      // Print the Exception
+      ex.printStackTrace();
+    } finally {
+      // Close the EntityManager
+      manager.close();
+    }
+    return privateInfo;
   }
 
 }

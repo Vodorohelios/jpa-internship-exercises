@@ -2,6 +2,7 @@ package internship.dao;
 
 import internship.models.Bank;
 import internship.models.Department;
+import internship.models.User;
 import internship.services.EmfService;
 
 import javax.persistence.EntityManager;
@@ -139,7 +140,40 @@ public class DepartmentDao {
     }
   }
 
-  public List readAll() {
+  public Department read(int id) {
+
+    Department department = null;
+
+    // Create an EntityManager
+    EntityManager manager = emfService.createEntityManager();
+    EntityTransaction transaction = null;
+
+    try {
+      // Get a transaction
+      transaction = manager.getTransaction();
+      // Begin the transaction
+      transaction.begin();
+
+      // Get the User object
+      department = manager.find(Department.class, id);
+
+      // Commit the transaction
+      transaction.commit();
+    } catch (Exception ex) {
+      // If there are any exceptions, roll back the changes
+      if (transaction != null) {
+        transaction.rollback();
+      }
+      // Print the Exception
+      ex.printStackTrace();
+    } finally {
+      // Close the EntityManager
+      manager.close();
+    }
+    return department;
+  }
+
+  public List<Department> readAll() {
 
     List<Department> departments = null;
 

@@ -172,7 +172,7 @@ public class BankDao {
     return bank;
   }
 
-  public List readAll() {
+  public List<Bank> readAll() {
 
     List<Bank> banks = null;
 

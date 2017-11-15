@@ -9,6 +9,7 @@
         <class>internship.models.Bank</class>
         <class>internship.models.Department</class>
         <class>internship.models.User</class>
+        <class>internship.models.Project</class>
         <properties>
             <!-- The JDBC driver of your database -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />

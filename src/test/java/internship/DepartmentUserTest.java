@@ -3,15 +3,15 @@ package internship;
 import internship.dao.DepartmentDao;
 import internship.dao.DepartmentDao;
 import internship.dao.UserDao;
+import internship.models.*;
 import internship.models.Department;
-import internship.models.Department;
-import internship.models.PrivateInfo;
-import internship.models.User;
 import internship.services.EmfService;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+
+import static org.junit.Assert.assertEquals;
 
 public class DepartmentUserTest {
 
@@ -43,6 +43,12 @@ public class DepartmentUserTest {
 
     // Save Department object
     departmentDao.save(department);
+
+    Department department1 = departmentDao.read(1);
+    assertEquals("address-1", department1.getAddress());
+
+    User foundUser = userDao.read(1);
+    assertEquals("user-1", user1.getName());
 
     // Don't forget to close the entity manager factory
     emfService.closeEntityManager();
